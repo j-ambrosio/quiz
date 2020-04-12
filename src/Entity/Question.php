@@ -4,28 +4,37 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * Default question entity.
+ * @ORM\Entity(repositoryClass="App\Repository\QuestionRepository")
  */
 class Question implements QuestionInterface
 {
     /**
-     * @var string
+     * @ORM\Column
      */
     protected $type;
 
     /**
-     * @var string
+     * @ORM\Column
      */
     protected $sentence;
 
     /**
-     * @var string
+     * @ORM\Column
      */
     protected $title;
 
     /**
-     * @var int
+     * @ORM\ManyToOne(targetEntity="App\Entity\Quiz", inversedBy="questions")
+     */
+    protected $quiz;
+
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
     private $id;
 
@@ -106,5 +115,32 @@ class Question implements QuestionInterface
         $this->type = $type;
 
         return $this;
+    }
+
+    /**
+     * Get the quiz
+     *
+     * @return Quiz
+     */
+    public function getQuiz() : Quiz
+    {
+        return $this->quiz;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function render() : string
+    {
+        // @todo Add html return
+        return '<span></span>';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function validate() : bool
+    {
+        return true;
     }
 }

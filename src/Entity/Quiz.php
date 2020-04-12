@@ -4,9 +4,13 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
+ * @ORM\Entity(repositoryClass="App\Repository\QuizRepository")
  * @ORM\HasLifecycleCallbacks
  */
 class Quiz
@@ -14,19 +18,55 @@ class Quiz
     use TimestampableEntity;
 
     /**
-     * @var string
+     * @ORM\Column(type="string")
      */
     protected $status;
 
     /**
-     * @var int
+     * @ORM\Column(type="smallint")
      */
     protected $isOpen;
 
     /**
-     * @var int
+     * @ORM\OneToMany(targetEntity="App\Entity\Question", mappedBy="quiz")
+     */
+    protected $questions;
+
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * Quiz constructor
+     */
+    public function __construct()
+    {
+        $this->questions = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Question[]
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    /**
+     * Add new question to Quiz
+     * @param Question $question
+     *
+     * @return self
+     */
+    public function addQuestion(Question $question) : self
+    {
+        $this->questions->add($question);
+
+        return $this;
+    }
 
     /**
      * Get the value of status

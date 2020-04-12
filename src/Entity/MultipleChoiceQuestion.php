@@ -4,8 +4,12 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * MultipleChoiceQuestion.php.
+ * Implementation of Question with multiple choice
  */
 class MultipleChoiceQuestion extends Question
 {
@@ -15,11 +19,17 @@ class MultipleChoiceQuestion extends Question
     private $options;
 
     /**
-     * Get Options
-     *
-     * @return QuestionOption
+     * MultipleChoiceQuestion constructor
      */
-    public function getOptions(): QuestionOption
+    public function __construct()
+    {
+        $this->options = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|QuestionOptioin[]
+     */
+    public function getOptions(): Collection
     {
         return $this->options;
     }
@@ -32,25 +42,8 @@ class MultipleChoiceQuestion extends Question
      */
     public function pushOption(QuestionOption $option): self
     {
-        $this->options[] = $option;
+        $this->options->add($option);
 
         return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function render() : string
-    {
-        // @todo Add html return
-        return '<span></span>';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function validate() : bool
-    {
-        return true;
     }
 }
