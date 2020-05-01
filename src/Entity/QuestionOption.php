@@ -7,7 +7,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\QuestionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\QuestionOptionRepository")
  */
 class QuestionOption
 {
@@ -20,6 +20,11 @@ class QuestionOption
      * @ORM\Column
      */
     protected $title;
+
+    /**
+     * @ORM\Column
+     */
+    protected $description;
 
     /**
      * @ORM\Column(type="boolean", name="is_correct")
@@ -102,11 +107,37 @@ class QuestionOption
     /**
      * Set the value of question
      *
+     * @param Question $question
+     *
      * @return  self
      */
     public function setQuestion(Question $question) : self
     {
         $this->question = $question;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set the value of description
+     *
+     * @param string $description
+     *
+     * @return self
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
 
         return $this;
     }
